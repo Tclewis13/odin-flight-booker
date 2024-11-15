@@ -1,16 +1,26 @@
-<p style="color: green"><%= notice %></p>
-
 <% content_for :title, "Flights" %>
 
 <h1>Flights</h1>
 
-<div id="flights">
-  <% @flights.each do |flight| %>
-    <%= render flight %>
-    <p>
-      <%= link_to "Show this flight", flight %>
-    </p>
-  <% end %>
-</div>
+<%= form_tag(flights_path, method: :get ) do %>
+  Departure Airport
+  <%= select_tag(:departure_id, options_for_select(@airport_options)) %>
+  <br>
+  Destination Airport
+  <%= select_tag(:arrival_id, options_for_select(@airport_options)) %>
+  <br>
+  Passengers
+  <%= select_tag(:passengers, options_for_select([1,2,3,4])) %>
+  <br>
+  Date
+  <%= select_tag :takeoff, options_from_collection_for_select(Flight.get_flight_dates, 'takeoff', :flight_date_formatted) %>
+  <br>
+  <%= submit_tag ("Search") %>
+<% end %>
 
-<%= link_to "New flight", new_flight_path %>
+<% @flights.each do |flight|%>
+  <ul>
+    <li><%= link_to flight.departure.name, flight_path(flight)%>
+  </ul>
+
+<% end %>
