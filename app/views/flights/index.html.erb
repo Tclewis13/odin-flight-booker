@@ -18,9 +18,12 @@
   <%= submit_tag ("Search") %>
 <% end %>
 
-<% @flights.each do |flight|%>
-  <ul>
-    <li><%= link_to "#{flight.departure.name} to #{flight.arrival.name}", flight_path(flight)%>
-  </ul>
+<%= form_with model: @booking do |form| %>
+  <%= form.collection_radio_buttons(:flight_id, @flights.order(:takeoff), :id, :flight_info) do |b|%>
 
+    <div>
+      <%= b.radio_button %>
+      <%= b.label %>
+    </div>
+  <% end %>
 <% end %>

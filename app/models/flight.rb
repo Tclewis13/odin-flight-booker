@@ -11,6 +11,10 @@ class Flight < ApplicationRecord
     Flight.find_by_sql("select distinct takeoff from flights where takeoff is not null order by takeoff asc")
   end
 
+  def flight_info
+    "#{self.departure.name} to #{self.arrival.name} Takeoff: #{self.takeoff} Duration: #{self.duration}"
+  end
+
   def self.search(params)
     if params[:departure_id] && params[:arrival_id] && params[:takeoff]
       departure_airport = Airport.find(params[:departure_id])
