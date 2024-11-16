@@ -11,10 +11,12 @@ class Flight < ApplicationRecord
   end
 
   def self.search(params)
-    if params[:departure_id]
-      airport = Airport.find(params[:departure_id])
-      if airport
-        self.where(departure_id: airport)
+    if params[:departure_id] && params[:arrival_id] && params[:takeoff]
+      departure_airport = Airport.find(params[:departure_id])
+      arrival_airport = Airport.find(params[:arrival_id])
+      flight_date = Date.parse(params[:takeoff])
+      if arrival_airport && departure_airport && flight_date
+        self.where(departure_id: departure_airport, arrival_id: arrival_airport, takeoff: flight_date.all_day)
       else
         @flights = Flight.all
       end
